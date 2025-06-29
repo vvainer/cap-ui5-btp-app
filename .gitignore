@@ -1,0 +1,84 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# CAP
+gen/
+.cdsrc-private.json
+default-*.db
+*.db
+
+# UI5
+dist/
+resources/
+.tmp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+.env.production
+
+# Temporary folders
+tmp/
+temp/
+
+# Build outputs
+build/
+target/
+
+# MTA
+mta_archives/
+.mta/
+
+# Cloud Foundry
+manifest-*.yml
+.cfignore
+
+# SAP specific
+.che/
+.pipeline/
+approuter/
