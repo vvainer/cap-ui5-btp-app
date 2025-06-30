@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .search-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .search-input {
+            width: 300px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .btn {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .products-table th,
+        .products-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .products-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .products-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        .status-success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .status-warning {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .status-error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .rating {
+            color: #ffc107;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .error {
+            color: #dc3545;
+            text-align: center;
+            padding: 20px;
+        }
+        .product-count {
+            margin: 10px 0;
+            font-weight: bold;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Product Management Demo</h1>
+        
+        <div class="search-section">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search products...">
+            <button class="btn" onclick="searchProducts()">Search</button>
+            <button class="btn" onclick="loadProducts()">Refresh</button>
+        </div>
+        
+        <div id="productCount" class="product-count"></div>
+        <div id="loading" class="loading">Loading products...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <table id="productsTable" class="products-table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Supplier</th>
+                    <th>Price</th>
+                    <th>Rating</th>
+                    <th>Availability</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="productsBody">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let allProducts = [];
+        
+        async function loadProducts() {
+            try {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('error').style.display = 'none';
+                document.getElementById('productsTable').style.display = 'none';
+                
+                const response = await fetch('/odata/v4/products/Products');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                allProducts = data.value || [];
+                
+                displayProducts(allProducts);
+                document.getElementById('productCount').textContent = `Total Products: ${allProducts.length}`;
+                
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('error').textContent = 'Error loading products: ' + error.message;
+                document.getElementById('error').style.display = 'block';
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+        
+        function displayProducts(products) {
+            const tbody = document.getElementById('productsBody');
+            tbody.innerHTML = '';
+            
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.ID || ''}</td>
+                    <td>${product.name || ''}</td>
+                    <td>${product.category || ''}</td>
+                    <td>${product.supplier || ''}</td>
+                    <td>${product.price ? product.price + ' ' + (product.currency || 'USD') : ''}</td>
+                    <td class="rating">${product.averageRating ? '★'.repeat(Math.floor(product.averageRating)) + ' (' + product.averageRating + ')' : ''}</td>
+                    <td class="${getStatusClass(product.availability)}">${product.availability || ''}</td>
+                    <td class="${getEditingStatusClass(product.editingStatus)}">${product.editingStatus || ''}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            document.getElementById('productsTable').style.display = 'table';
+        }
+        
+        function getStatusClass(availability) {
+            switch (availability) {
+                case 'In Stock': return 'status-success';
+                case 'Out of Stock': return 'status-error';
+                case 'Limited Stock': return 'status-warning';
+                default: return '';
+            }
+        }
+        
+        function getEditingStatusClass(status) {
+            switch (status) {
+                case 'Published': return 'status-success';
+                case 'Draft': return 'status-warning';
+                case 'Archived': return 'status-error';
+                default: return '';
+            }
+        }
+        
+        function searchProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (!searchTerm) {
+                displayProducts(allProducts);
+                document.getElementById('productCount').textContent = `Total Products: ${allProducts.length}`;
+                return;
+            }
+            
+            const filteredProducts = allProducts.filter(product => 
+                (product.name && product.name.toLowerCase().includes(searchTerm)) ||
+                (product.category && product.category.toLowerCase().includes(searchTerm)) ||
+                (product.supplier && product.supplier.toLowerCase().includes(searchTerm)) ||
+                (product.ID && product.ID.toLowerCase().includes(searchTerm))
+            );
+            
+            displayProducts(filteredProducts);
+            document.getElementById('productCount').textContent = `Filtered Products: ${filteredProducts.length} of ${allProducts.length}`;
+        }
+        
+        // Allow search on Enter key
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchProducts();
+            }
+        });
+        
+        // Load products when page loads
+        window.addEventListener('load', loadProducts);
+    </script>
+</body>
+</html>

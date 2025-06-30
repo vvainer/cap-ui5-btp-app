@@ -1,0 +1,95 @@
+<mvc:View
+    controllerName="com.sap.products.app.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form">
+    
+    <App id="app">
+        <Page id="page" title="Product Management" showNavButton="false">
+            <content>
+                <VBox class="sapUiMediumMargin">
+                    <!-- Search Section -->
+                    <Panel headerText="Search Products" class="sapUiResponsiveMargin" width="auto">
+                        <content>
+                            <HBox alignItems="Center" class="sapUiSmallMargin">
+                                <SearchField id="searchField" 
+                                           placeholder="Search products..." 
+                                           width="20rem" 
+                                           search="onSearch"
+                                           class="sapUiTinyMarginEnd"/>
+                                <Button text="Load Products" 
+                                       press="onLoadProducts" 
+                                       type="Emphasized"
+                                       class="sapUiTinyMarginEnd"/>
+                                <Button text="Clear" 
+                                       press="onClearSearch" 
+                                       class="sapUiTinyMarginEnd"/>
+                            </HBox>
+                        </content>
+                    </Panel>
+                    
+                    <!-- Products Table -->
+                    <Table id="productsTable" 
+                           items="{/Products}" 
+                           growing="true" 
+                           growingThreshold="20"
+                           mode="SingleSelect"
+                           class="sapUiResponsiveMargin"
+                           width="auto">
+                        <headerToolbar>
+                            <Toolbar>
+                                <Title text="Products" level="H2"/>
+                                <ToolbarSpacer />
+                                <Text id="productCount" text="Loading..." class="sapUiTinyMarginEnd"/>
+                                <Button text="Refresh" press="onRefresh" icon="sap-icon://refresh" />
+                            </Toolbar>
+                        </headerToolbar>
+                        <columns>
+                            <Column width="10em">
+                                <Text text="Product ID" />
+                            </Column>
+                            <Column minScreenWidth="Tablet" demandPopin="true">
+                                <Text text="Name" />
+                            </Column>
+                            <Column minScreenWidth="Desktop" demandPopin="true">
+                                <Text text="Category" />
+                            </Column>
+                            <Column minScreenWidth="Desktop" demandPopin="true">
+                                <Text text="Supplier" />
+                            </Column>
+                            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
+                                <Text text="Price" />
+                            </Column>
+                            <Column minScreenWidth="Desktop" demandPopin="true">
+                                <Text text="Rating" />
+                            </Column>
+                            <Column minScreenWidth="Tablet" demandPopin="true">
+                                <Text text="Availability" />
+                            </Column>
+                            <Column minScreenWidth="Tablet" demandPopin="true">
+                                <Text text="Status" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem press="onItemPress">
+                                <cells>
+                                    <Text text="{ID}" />
+                                    <Text text="{name}" />
+                                    <Text text="{category}" />
+                                    <Text text="{supplier}" />
+                                    <Text text="{parts: ['price', 'currency'], formatter: '.formatPrice'}" />
+                                    <RatingIndicator value="{averageRating}" maxValue="5" displayOnly="true" />
+                                    <ObjectStatus text="{availability}" 
+                                                 state="{path: 'availability', formatter: '.formatAvailabilityState'}" />
+                                    <ObjectStatus text="{editingStatus}" 
+                                                 state="{path: 'editingStatus', formatter: '.formatEditingStatusState'}" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+            </content>
+        </Page>
+    </App>
+</mvc:View>

@@ -1,0 +1,51 @@
+{
+  "xsappname": "cap-ui5-btp-app",
+  "tenant-mode": "dedicated",
+  "description": "Security descriptor for Product Management Application",
+  "scopes": [
+    {
+      "name": "Products.Read",
+      "description": "Read products"
+    },
+    {
+      "name": "Products.Write",
+      "description": "Manage products"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "ProductViewer",
+      "description": "Product Viewer Role",
+      "scope-references": [
+        "Products.Read"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "ProductManager",
+      "description": "Product Manager Role",
+      "scope-references": [
+        "Products.Read",
+        "Products.Write"
+      ],
+      "attribute-references": []
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "ProductViewer",
+      "description": "Product Viewer",
+      "role-template-references": [
+        "$XSAPPNAME.ProductViewer"
+      ]
+    },
+    {
+      "name": "ProductManager",
+      "description": "Product Manager",
+      "role-template-references": [
+        "$XSAPPNAME.ProductManager"
+      ]
+    }
+  ]
+}

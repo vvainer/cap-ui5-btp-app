@@ -1,0 +1,36 @@
+{
+  "build": {
+    "target": ".",
+    "tasks": [
+      {
+        "for": "hana",
+        "dest": "../db"
+      },
+      {
+        "for": "node-cf",
+        "dest": "../srv"
+      }
+    ]
+  },
+  "hana": {
+    "deploy-format": "hdbtable"
+  },
+  "requires": {
+    "db": {
+      "kind": "sqlite",
+      "credentials": {
+        "url": "db.sqlite"
+      }
+    },
+    "auth": {
+      "kind": "mocked"
+    }
+  },
+  "odata": {
+    "version": "v4"
+  },
+  "features": {
+    "fetch_csrf": true,
+    "assert_integrity": "db"
+  }
+}
