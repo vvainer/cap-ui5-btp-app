@@ -3,30 +3,110 @@
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
     xmlns="sap.m"
-    xmlns:f="sap.ui.layout.form">
+    xmlns:f="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core">
     
     <App id="app">
-        <Page id="page" title="Product Management" showNavButton="false">
+        <Page id="page" title="Manage Products" showNavButton="false">
             <content>
                 <VBox class="sapUiMediumMargin">
-                    <!-- Search Section -->
-                    <Panel headerText="Search Products" class="sapUiResponsiveMargin" width="auto">
+                    <!-- Filter Bar Section -->
+                    <Panel headerText="" class="sapUiResponsiveMargin" width="auto">
                         <content>
-                            <HBox alignItems="Center" class="sapUiSmallMargin">
-                                <SearchField id="searchField" 
-                                           placeholder="Search products..." 
-                                           width="20rem" 
-                                           search="onSearch"
-                                           liveChange="onSearch"
-                                           class="sapUiTinyMarginEnd"/>
-                                <Button text="Load Products" 
-                                       press="onLoadProducts" 
-                                       type="Emphasized"
-                                       class="sapUiTinyMarginEnd"/>
-                                <Button text="Clear" 
-                                       press="onClearSearch" 
-                                       class="sapUiTinyMarginEnd"/>
-                            </HBox>
+                            <VBox class="sapUiSmallMargin">
+                                <!-- First Row of Filters -->
+                                <HBox alignItems="Center" class="sapUiTinyMarginBottom">
+                                    <VBox class="sapUiTinyMarginEnd" width="200px">
+                                        <Label text="Search" class="sapUiTinyMarginBottom"/>
+                                        <SearchField id="searchField" 
+                                                   placeholder="Search products..." 
+                                                   width="100%" 
+                                                   search="onSearch"
+                                                   liveChange="onSearch"/>
+                                    </VBox>
+                                    <VBox class="sapUiTinyMarginEnd" width="150px">
+                                        <Label text="Editing Status" class="sapUiTinyMarginBottom"/>
+                                        <ComboBox id="editingStatusFilter"
+                                                width="100%"
+                                                selectedKey="All"
+                                                selectionChange="onFilterChange">
+                                            <core:Item key="All" text="All"/>
+                                            <core:Item key="Published" text="Published"/>
+                                            <core:Item key="Draft" text="Draft"/>
+                                            <core:Item key="Archived" text="Archived"/>
+                                        </ComboBox>
+                                    </VBox>
+                                    <VBox class="sapUiTinyMarginEnd" width="200px">
+                                        <Label text="Supplier" class="sapUiTinyMarginBottom"/>
+                                        <Input id="supplierFilter" 
+                                             placeholder="Enter supplier..."
+                                             width="100%"
+                                             showValueHelp="true"
+                                             valueHelpRequest="onSupplierValueHelp"
+                                             change="onFilterChange"/>
+                                    </VBox>
+                                    <VBox class="sapUiTinyMarginEnd" width="150px">
+                                        <Label text="Average Rating" class="sapUiTinyMarginBottom"/>
+                                        <ComboBox id="ratingFilter"
+                                                width="100%"
+                                                selectedKey="All"
+                                                selectionChange="onFilterChange">
+                                            <core:Item key="All" text="All"/>
+                                            <core:Item key="5" text="5 Stars"/>
+                                            <core:Item key="4" text="4+ Stars"/>
+                                            <core:Item key="3" text="3+ Stars"/>
+                                            <core:Item key="2" text="2+ Stars"/>
+                                            <core:Item key="1" text="1+ Stars"/>
+                                        </ComboBox>
+                                    </VBox>
+                                    <VBox class="sapUiTinyMarginEnd" width="150px">
+                                        <Label text="Price Range" class="sapUiTinyMarginBottom"/>
+                                        <ComboBox id="priceRangeFilter"
+                                                width="100%"
+                                                selectedKey="All"
+                                                selectionChange="onFilterChange">
+                                            <core:Item key="All" text="All"/>
+                                            <core:Item key="0-100" text="$0 - $100"/>
+                                            <core:Item key="100-500" text="$100 - $500"/>
+                                            <core:Item key="500-1000" text="$500 - $1,000"/>
+                                            <core:Item key="1000-2000" text="$1,000 - $2,000"/>
+                                            <core:Item key="2000+" text="$2,000+"/>
+                                        </ComboBox>
+                                    </VBox>
+                                </HBox>
+                                
+                                <!-- Second Row of Filters -->
+                                <HBox alignItems="Center" class="sapUiTinyMarginBottom">
+                                    <VBox class="sapUiTinyMarginEnd" width="200px">
+                                        <Label text="Category" class="sapUiTinyMarginBottom"/>
+                                        <ComboBox id="categoryFilter"
+                                                width="100%"
+                                                selectedKey="All"
+                                                selectionChange="onFilterChange">
+                                            <core:Item key="All" text="All"/>
+                                            <core:Item key="Computer Systems" text="Computer Systems"/>
+                                            <core:Item key="Computer Components" text="Computer Components"/>
+                                            <core:Item key="Desktops" text="Desktops"/>
+                                            <core:Item key="Monitors" text="Monitors"/>
+                                            <core:Item key="Printers" text="Printers"/>
+                                            <core:Item key="Storage" text="Storage"/>
+                                            <core:Item key="Accessories" text="Accessories"/>
+                                            <core:Item key="Tablets" text="Tablets"/>
+                                            <core:Item key="Projectors" text="Projectors"/>
+                                        </ComboBox>
+                                    </VBox>
+                                    <ToolbarSpacer/>
+                                    <HBox alignItems="Center">
+                                        <Button text="Adapt Filters" 
+                                               press="onAdaptFilters" 
+                                               class="sapUiTinyMarginEnd"/>
+                                        <Button text="Go" 
+                                               press="onApplyFilters" 
+                                               type="Emphasized"/>
+                                    </HBox>
+                                </HBox>
+                            </VBox>
                         </content>
                     </Panel>
                     
@@ -35,56 +115,59 @@
                            items="{/Products}" 
                            growing="true" 
                            growingThreshold="20"
-                           mode="SingleSelect"
+                           mode="MultiSelect"
                            class="sapUiResponsiveMargin"
                            width="auto">
                         <headerToolbar>
                             <Toolbar>
-                                <Title text="Products" level="H2"/>
+                                <Title id="productsTitle" text="Products" level="H2"/>
                                 <ToolbarSpacer />
                                 <Text id="productCount" text="Loading..." class="sapUiTinyMarginEnd"/>
                                 <Button text="Refresh" press="onRefresh" icon="sap-icon://refresh" />
                             </Toolbar>
                         </headerToolbar>
                         <columns>
-                            <Column width="10em">
+                            <Column width="4em">
+                                <Text text="Image" />
+                            </Column>
+                            <Column width="8em">
                                 <Text text="Product ID" />
                             </Column>
                             <Column minScreenWidth="Tablet" demandPopin="true">
-                                <Text text="Name" />
+                                <Text text="Category" />
                             </Column>
                             <Column minScreenWidth="Desktop" demandPopin="true">
-                                <Text text="Category" />
+                                <Text text="Sub-Category" />
                             </Column>
                             <Column minScreenWidth="Desktop" demandPopin="true">
                                 <Text text="Supplier" />
                             </Column>
-                            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
-                                <Text text="Price" />
-                            </Column>
                             <Column minScreenWidth="Desktop" demandPopin="true">
-                                <Text text="Rating" />
-                            </Column>
-                            <Column minScreenWidth="Tablet" demandPopin="true">
                                 <Text text="Availability" />
                             </Column>
-                            <Column minScreenWidth="Tablet" demandPopin="true">
-                                <Text text="Status" />
+                            <Column minScreenWidth="Desktop" demandPopin="true">
+                                <Text text="Average Rating" />
+                            </Column>
+                            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
+                                <Text text="Product Unit Price" />
                             </Column>
                         </columns>
                         <items>
                             <ColumnListItem press="onItemPress">
                                 <cells>
+                                    <Image src="{imageUrl}" 
+                                          width="40px" 
+                                          height="40px" 
+                                          densityAware="false"
+                                          decorative="true"/>
                                     <Text text="{ID}" />
-                                    <Text text="{name}" />
                                     <Text text="{category}" />
+                                    <Text text="{subCategory}" />
                                     <Text text="{supplier}" />
-                                    <Text text="{parts: ['price', 'currency'], formatter: '.formatPrice'}" />
-                                    <RatingIndicator value="{averageRating}" maxValue="5" displayOnly="true" />
                                     <ObjectStatus text="{availability}" 
                                                  state="{path: 'availability', formatter: '.formatAvailabilityState'}" />
-                                    <ObjectStatus text="{editingStatus}" 
-                                                 state="{path: 'editingStatus', formatter: '.formatEditingStatusState'}" />
+                                    <RatingIndicator value="{averageRating}" maxValue="5" displayOnly="true" />
+                                    <Text text="{parts: ['price', 'currency'], formatter: '.formatPrice'}" />
                                 </cells>
                             </ColumnListItem>
                         </items>

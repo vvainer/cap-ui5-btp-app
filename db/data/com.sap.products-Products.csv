@@ -1,12 +1,12 @@
 ID,name,category,subCategory,supplier,imageUrl,availability,averageRating,price,currency,editingStatus
-HT-1000,Notebook Basic 15,Laptops,Basic,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1000.jpg,In Stock,4.2,956.00,USD,Published
-HT-1001,Notebook Basic 17,Laptops,Basic,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg,In Stock,4.5,1249.00,USD,Published
-HT-1002,Notebook Basic 18,Laptops,Basic,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1002.jpg,In Stock,4.2,1570.00,USD,Published
-HT-1003,Notebook Basic 19,Laptops,Basic,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1003.jpg,In Stock,4.2,1650.00,USD,Published
-HT-1007,ITelO Vault,Storage,Accessories,Technocom,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1007.jpg,In Stock,4.0,299.00,USD,Published
-HT-1010,Notebook Professional 15,Laptops,Professional,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1010.jpg,In Stock,4.3,1999.00,USD,Published
-HT-1011,Notebook Professional 17,Laptops,Professional,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1011.jpg,In Stock,4.1,2299.00,USD,Published
-HT-1020,ITelO Vault Net,Storage,Network,Technocom,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1020.jpg,In Stock,4.5,459.00,USD,Published
+HT-1000,Notebook Basic 15,Computer Systems,Notebooks,SAP,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1000.jpg,In Stock,4.2,956.00,USD,Published
+HT-1001,Notebook Basic 17,Computer Systems,Notebooks,Becker Berlin,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg,In Stock,4.1,1249.00,USD,Published
+HT-1002,Notebook Basic 18,Computer Systems,Notebooks,DelBont Industries,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1002.jpg,In Stock,4.3,1270.00,USD,Published
+HT-1003,Notebook Basic 19,Computer Systems,Notebooks,Tepa,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1003.jpg,In Stock,4.2,1650.00,USD,Published
+HT-1007,ITelO Vault,Computer Components,PDAs & Organizers,Panorama Studios,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1007.jpg,In Stock,4.3,299.00,USD,Published
+HT-1010,Notebook Professional 15,Computer Systems,Notebooks,TECUM,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1010.jpg,In Stock,4.1,1999.00,USD,Published
+HT-1011,Notebook Professional 17,Computer Systems,Notebooks,Asia High tech,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1011.jpg,In Stock,4.2,2299.00,USD,Published
+HT-1020,ITelO Vault Net,Computer Components,PDAs & Organizers,Laurent,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1020.jpg,In Stock,4.8,459.00,USD,Published
 HT-1021,ITelO Vault SAT,Storage,Satellite,Technocom,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1021.jpg,In Stock,4.1,149.00,USD,Published
 HT-1022,Comfort Easy,Accessories,Ergonomic,Ergonomic Solutions,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1022.jpg,In Stock,4.2,279.00,USD,Published
 HT-1030,Ergo Screen E-I,Monitors,Ergonomic,Technocom,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1030.jpg,In Stock,4.2,460.00,USD,Published
@@ -31,9 +31,9 @@ HT-1080,Deskjet Super Eco,Printers,Inkjet,Printer for All,https://sapui5.hana.on
 HT-1081,Deskjet Super Eco Color,Printers,Inkjet,Printer for All,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1081.jpg,In Stock,4.0,150.00,USD,Published
 HT-1090,Multi Function Cal,Accessories,Calculator,Technocom,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1090.jpg,In Stock,4.1,85.00,USD,Published
 HT-1091,Smart Design,Accessories,Design,Smart Design,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1091.jpg,In Stock,4.2,115.00,USD,Published
-HT-1092,High End Laptop,Laptops,High-End,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1092.jpg,In Stock,4.6,3299.00,USD,Published
-HT-1100,Ultrabook Edge,Laptops,Ultrabook,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1100.jpg,In Stock,4.4,1799.00,USD,Published
-HT-1101,Ultrabook Elite,Laptops,Ultrabook,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1101.jpg,In Stock,4.5,2199.00,USD,Published
+HT-1092,High End Laptop,Computer Systems,High-End,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1092.jpg,In Stock,4.6,3299.00,USD,Published
+HT-1100,Ultrabook Edge,Computer Systems,Ultrabook,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1100.jpg,In Stock,4.4,1799.00,USD,Published
+HT-1101,Ultrabook Elite,Computer Systems,Ultrabook,Very Best Screens,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1101.jpg,In Stock,4.5,2199.00,USD,Published
 HT-1110,Power Projector 4713,Projectors,Professional,Technocom,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1110.jpg,In Stock,4.3,799.00,USD,Published
 HT-1120,Beam Breaker B-1,Projectors,Portable,Technocom,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1120.jpg,In Stock,4.1,399.00,USD,Published
 HT-1130,Beam Breaker B-2,Projectors,Portable,Technocom,https://sapui5.hana.ondemand.com/test-resources/sap/ui/documentation/sdk/images/HT-1130.jpg,In Stock,4.2,539.00,USD,Published
