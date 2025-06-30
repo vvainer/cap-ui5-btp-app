@@ -8,45 +8,79 @@ sap.ui.define([
 
     return Controller.extend("com.sap.products.app.controller.App", {
         onInit: function () {
-            // Load products on initialization
-            this.onLoadProducts();
+            // Initialize the view and set up initial product count
+            var oTable = this.byId("productsTable");
+            var oBinding = oTable.getBinding("items");
+            
+            if (oBinding) {
+                // Set up event handler for initial data load
+                var fnInitialDataReceived = function(oEvent) {
+                    this._updateProductCount();
+                    oBinding.detachDataReceived(fnInitialDataReceived);
+                }.bind(this);
+                
+                oBinding.attachDataReceived(fnInitialDataReceived);
+            }
+            
+            // Set initial count
+            setTimeout(function() {
+                this._updateProductCount();
+            }.bind(this), 500);
         },
 
         onLoadProducts: function () {
-            var oModel = this.getView().getModel();
             var oTable = this.byId("productsTable");
-            
-            // Show loading indicator
-            oTable.setBusy(true);
-            
-            // Bind the table to the Products entity
-            oTable.bindItems({
-                path: "/Products",
-                template: oTable.getBindingInfo("items").template
-            });
-            
-            // Update product count after binding
             var oBinding = oTable.getBinding("items");
-            if (oBinding) {
-                oBinding.attachDataReceived(function(oEvent) {
-                    var iCount = oEvent.getParameter("data") ? oEvent.getParameter("data").value.length : 0;
-                    this.byId("productCount").setText("Total Products: " + iCount);
-                    oTable.setBusy(false);
-                }.bind(this));
-            }
             
-            MessageToast.show("Products loaded successfully!");
+            if (oBinding) {
+                // Show loading indicator
+                oTable.setBusy(true);
+                
+                // Refresh the binding
+                oBinding.refresh();
+                
+                // Set up one-time event handler for data received
+                var fnDataReceived = function(oEvent) {
+                    oTable.setBusy(false);
+                    this._updateProductCount();
+                    oBinding.detachDataReceived(fnDataReceived);
+                    MessageToast.show("Products loaded successfully!");
+                }.bind(this);
+                
+                // Set up one-time event handler for data request failed
+                var fnDataRequestFailed = function(oEvent) {
+                    oTable.setBusy(false);
+                    oBinding.detachDataRequestFailed(fnDataRequestFailed);
+                    MessageToast.show("Failed to load products. Please try again.");
+                }.bind(this);
+                
+                oBinding.attachDataReceived(fnDataReceived);
+                oBinding.attachDataRequestFailed(fnDataRequestFailed);
+                
+                // Fallback: Clear busy state after timeout
+                setTimeout(function() {
+                    if (oTable.getBusy()) {
+                        oTable.setBusy(false);
+                        console.warn("Cleared busy state due to timeout");
+                    }
+                }, 10000); // 10 second timeout
+            } else {
+                MessageToast.show("Table binding not found. Please refresh the page.");
+            }
         },
 
         onRefresh: function () {
             var oModel = this.getView().getModel();
-            oModel.refresh();
+            if (oModel) {
+                oModel.refresh();
+            }
             this.onLoadProducts();
-            MessageToast.show("Data refreshed!");
         },
 
         onSearch: function (oEvent) {
-            var sQuery = oEvent.getParameter("query") || oEvent.getParameter("newValue");
+            var sQuery = oEvent.getParameter("query") || 
+                        oEvent.getParameter("newValue") || 
+                        oEvent.getSource().getValue();
             this._applySearchFilter(sQuery);
         },
 
@@ -72,20 +106,52 @@ sap.ui.define([
                         and: false
                     });
                     oBinding.filter([oFilter]);
-                    
-                    // Update count for filtered results
-                    oBinding.attachDataReceived(function(oEvent) {
-                        var iCount = oEvent.getParameter("data") ? oEvent.getParameter("data").value.length : 0;
-                        this.byId("productCount").setText("Filtered Products: " + iCount);
-                    }.bind(this));
                 } else {
                     oBinding.filter([]);
-                    // Update count for all results
-                    oBinding.attachDataReceived(function(oEvent) {
-                        var iCount = oEvent.getParameter("data") ? oEvent.getParameter("data").value.length : 0;
-                        this.byId("productCount").setText("Total Products: " + iCount);
-                    }.bind(this));
                 }
+                
+                // Update count after filtering
+                this._updateProductCount();
+            }
+        },
+
+        _updateProductCount: function() {
+            var oTable = this.byId("productsTable");
+            var oBinding = oTable.getBinding("items");
+            var oProductCount = this.byId("productCount");
+            
+            if (oBinding && oProductCount) {
+                // Use a timeout to allow binding to update
+                setTimeout(function() {
+                    try {
+                        // Try different methods to get the count
+                        var iLength = oBinding.getLength();
+                        
+                        // If getLength doesn't work, count the contexts
+                        if (iLength === undefined || iLength < 0) {
+                            var aContexts = oBinding.getContexts();
+                            iLength = aContexts ? aContexts.length : 0;
+                        }
+                        
+                        // If still no count, try counting table items
+                        if (iLength === undefined || iLength < 0) {
+                            var aItems = oTable.getItems();
+                            iLength = aItems ? aItems.length : 0;
+                        }
+                        
+                        if (iLength !== undefined && iLength >= 0) {
+                            var sText = oBinding.isFiltered() ? 
+                                "Filtered Products: " + iLength : 
+                                "Total Products: " + iLength;
+                            oProductCount.setText(sText);
+                        } else {
+                            oProductCount.setText("Products: 0");
+                        }
+                    } catch (e) {
+                        console.warn("Error updating product count:", e);
+                        oProductCount.setText("Products");
+                    }
+                }, 200);
             }
         },
 

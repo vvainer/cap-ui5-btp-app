@@ -63,12 +63,6 @@
           "earlyRequests": true
         }
       }
-    },
-    "rootView": {
-      "viewName": "com.sap.products.app.view.App",
-      "type": "XML",
-      "async": true,
-      "id": "App"
     }
   }
 }

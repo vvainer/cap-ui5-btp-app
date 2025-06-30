@@ -17,7 +17,6 @@
                                            placeholder="Search products..." 
                                            width="20rem" 
                                            search="onSearch"
-                                           liveChange="onSearch"
                                            class="sapUiTinyMarginEnd"/>
                                 <Button text="Load Products" 
                                        press="onLoadProducts" 
